@@ -1,5 +1,6 @@
 const { Given, When, Then } = require('cucumber');
 const assert = require('assert');
+const { By, until } = require('selenium-webdriver')
 const { driver } = require('../support/web_driver');
 
 
@@ -18,11 +19,14 @@ Then(/^点击qq图标跳转到登录界面$/, async function () {
 
 Then(/^点击账户密码登录，并输入账号与密码进行登录$/, async function () {
     await driver.switchTo().frame('ptlogin_iframe')
-    await driver.findElement({ id:'switcher_plogin'}).click()
+    // 点击账号密码登录
+    let aaa = await driver.wait(until.elementIsVisible(await driver.findElement({ id:'switcher_plogin'})), 10000).click()
+    // 输入账号密码
     await driver.findElement({ css:'#u'}).sendKeys('1224179738@qq.com')
     await driver.findElement({ css:'#p'}).sendKeys('dingtao666')
     await driver.findElement({ css:'#login_button'}).click()
-    await driver.sleep(6000)
+    await driver.sleep(5000)
+    // await driver.wait(until.elementLocated(By.css('#tabs > li.current.created-tab > a')), 10000);
 
     // 断言
     await driver.switchTo().defaultContent()
